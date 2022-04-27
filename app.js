@@ -2,7 +2,10 @@ const express = require('express');
 const app = express();
 const mongoose = require('./database/mongoose');
 // var bodyParser = require('body-parser');
+
 const Usuario = require("./database/models/usuario");
+const Album = require("./database/models/album");
+
 // configuracion cabeceras http
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -16,8 +19,18 @@ app.use(express.json());
 // const user = new Usuario({ nombre: 'test1',correo:"example@mail.com",contrasena: "1252340",rol: "admin",imagen: "asdf.png"});
 // user.save();
 // rutas
+
+    const album = new Album({ titulo: 'Primavera',descripcion:"Musica Romatica",anio: "2015",imagen: "asdf.png",artistaID: "1"});
+    album.save();
+    
 app.get('/getUsuarios', (req, res) => {
     Usuario.find({})
+        .then((list) => {res.send(list); console.log(list)})
+        .catch( (error) => {console.log(error)});
+})
+
+app.get('/getAlbum',(req, res) => {
+    Album.find({})
         .then((list) => {res.send(list); console.log(list)})
         .catch( (error) => {console.log(error)});
 })
