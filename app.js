@@ -2,8 +2,13 @@ const express = require('express');
 const app = express();
 const mongoose = require('./database/mongoose');
 // var bodyParser = require('body-parser');
+
 const Usuario = require("./database/models/usuario");
+
+const Album = require("./database/models/album");
+
 const Artista = require("./database/models/artista");
+
 // configuracion cabeceras http
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -19,6 +24,11 @@ app.use(express.json());
 // const artist = new Artista({ nombre: 'test2',descripcion:"...",imagen: "asds.png"});
 // artist.save();
 // rutas
+
+//const album = new Album({ titulo: 'Primavera',descripcion:"Musica Romatica",anio: "2015",imagen: "asdf.png",artistaID: "1"});
+//album.save();
+
+
 app.get('/getUsuarios', (req, res) => {
     Usuario.find({})
         .then((list) => {res.send(list); console.log(list)})
@@ -75,6 +85,19 @@ app.delete('/deleteArtista/:id', (req, res) => {
         console.log(error);
     })
     //res.send("asd")
+})
+
+app.get('/getAlbum',(req, res) => {
+    Album.find({})
+        .then((list) => {res.send(list); console.log(list)})
+        .catch( (error) => {console.log(error)});
+})
+
+app.post('/postAlbum',(req, res)=>{
+    const album = new Album(req.body)
+    album.save()
+    .then((list) => {res.send(list); console.log(list)})
+    .catch( (error) => {console.log(error)});
 })
 
 app.listen( 3000, () => {
