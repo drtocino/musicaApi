@@ -29,6 +29,53 @@ app.get('/getArtistas', (req, res) => {
         .then((list) => {res.send(list); console.log(list)})
         .catch( (error) => {console.log(error)});
 })
+app.post('/postArtistas', (req, res) => {
+    //console.log(req.body)
+    const artist = new Artista(req.body);
+    artist.save().then((result) =>{
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+    })
+})
+
+app.put('/putArtista/:nombre', (req, res) => {
+    console.log(req.params)
+    const nombre = req.body.nombre
+    const param = req.params.nombre
+    Artista.updateOne({nombre: param},
+        {nombre: nombre},(err,docs) => {
+            console.log("Actualizado")
+        }
+    ).then((response) => {
+        res.send(response);
+    }).catch((error)=> {
+        console.log(error)
+    })
+    res.send("asd")
+
+    /*artist.save().then((result) =>{
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+    })*/
+})
+
+app.delete('/deleteArtista/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    Artista.findByIdAndDelete(id,(err,docs) => {
+
+        console.log(err);
+        console.log(docs);
+        err ? res.send("Error") : res.send("Exito");
+    }).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+    })
+    //res.send("asd")
+})
 
 app.listen( 3000, () => {
     console.log('iniciando server en puerto 3000');
