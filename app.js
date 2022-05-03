@@ -53,6 +53,15 @@ app.post('/postAlbum',(req, res)=>{
     .catch( (error) => {console.log(error)});
 })
 
+app.put('/putAlbum/:nombre', (req, res) => {
+    console.log(req.params);
+    Album.findOneAndUpdate(req.params,req.body)
+    .then((list) => {res.send(list); console.log(list)})
+    .catch( (error) => {console.log(error)});
+})
+
+
+
 app.listen( 3000, () => {
     console.log('iniciando server en puerto 3000');
 });
