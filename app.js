@@ -9,6 +9,8 @@ const Album = require("./database/models/album");
 
 const Artista = require("./database/models/artista");
 
+const Cancion = require('./database/models/cancion');
+
 // configuracion cabeceras http
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -28,6 +30,9 @@ app.use(express.json());
 //const album = new Album({ titulo: 'Primavera',descripcion:"Musica Romatica",anio: "2015",imagen: "asdf.png",artistaID: "1"});
 //album.save();
 
+//CANCION
+//const song = new Cancion({ numero: '1', nombre: 'Queen',duracion:"4:50",archivo: "Queen - I Want It All (Official Video).mp3",albumID: "3"});
+//song.save();
 
 app.get('/getUsuarios', (req, res) => {
     Usuario.find({})
@@ -133,6 +138,74 @@ app.delete('/deleteAlbum/:id', (req, res) => {
         console.log(error);
     })
 })
+
+//CRUD CANCION
+app.get('/getCanciones', (req, res) => {
+    Cancion.find({})
+        .then((list) => {res.send(list); console.log(list)})
+        .catch( (error) => {console.log(error)});
+})
+
+app.post('/postCanciones', (req, res) => {
+    // console.log(req.body)
+    const cancion = new Cancion(req.body);
+    cancion.save().then((result) =>{
+        res.send(result)
+    }).catch(()=>{
+        console.log(error);
+    });
+})
+
+app.put('/putCancion/:nombre', (req, res) => {
+    console.log(req.params)
+    const nombre = req.body.nombre
+    const param = req.params.nombre
+    Cancion.updateOne({nombre: param},
+        {nombre: nombre},(err,docs) => {
+            console.log("Actualizado")
+        }
+    ).then((response) => {
+        res.send(response);
+    }).catch((error)=> {
+        console.log(error)
+    })
+    res.send("Exito")
+})
+
+
+
+app.delete('/deleteCancion/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    Cancion.findByIdAndDelete(id,(err,docs) => {
+
+        console.log(err);
+        console.log(docs);
+        err ? res.send("Error") : res.send("Exito");
+    }).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+    })
+})
+
+app.delete('/deleteCancion/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    Cancion.findByIdAndDelete(id,(err,docs) => {
+
+        console.log(err);
+        console.log(docs);
+        err ? res.send("Error") : res.send("Exito");
+    }).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+    })
+    //res.send("asd")
+})
+
+
 
 app.listen( 3000, () => {
     console.log('iniciando server en puerto 3000');
