@@ -71,6 +71,8 @@ app.put('/putArtista/:nombre', (req, res) => {
     })*/
 })
 
+
+
 app.delete('/deleteArtista/:id', (req, res) => {
     const id = req.params.id
     console.log(id)
@@ -87,6 +89,8 @@ app.delete('/deleteArtista/:id', (req, res) => {
     //res.send("asd")
 })
 
+
+
 app.get('/getAlbum',(req, res) => {
     Album.find({})
         .then((list) => {res.send(list); console.log(list)})
@@ -101,13 +105,34 @@ app.post('/postAlbum',(req, res)=>{
 })
 
 app.put('/putAlbum/:nombre', (req, res) => {
-    console.log(req.params);
-    Album.findOneAndUpdate(req.params,req.body)
-    .then((list) => {res.send(list); console.log(list)})
-    .catch( (error) => {console.log(error)});
+    console.log(req.params)
+    const nombre = req.body.nombre
+    const params = req.params.nombre
+    Album.updateOne({nombre:param},
+        {nombre:nombre}, (err, res) => {
+            console.log("Actulizado")
+        }
+    ).then((response) => {
+        res.send(response);
+    }).catch((error)=> {
+        console.log(error)
+    })
+    res.send("Nef")
 })
 
-
+app.delete('/deleteAlbum/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    Artista.findByIdAndDelete(id,(err,docs) => {
+        console.log(err);
+        console.log(docs);
+        err ? res.send("Error") : res.send("Exito");
+    }).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+    })
+})
 
 app.listen( 3000, () => {
     console.log('iniciando server en puerto 3000');
