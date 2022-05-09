@@ -25,7 +25,7 @@ app.use(express.json());
 // artist.save();
 // rutas
 
-//const album = new Album({ titulo: 'Primavera',descripcion:"Musica Romatica",anio: "2015",imagen: "asdf.png",artistaID: "1"});
+//const album = new Album({ titulo: 'Verano',descripcion:"Musica Romatica",anio: "2015",imagen: "asdf.png",artistaID: "1"});
 //album.save();
 
 
@@ -71,13 +71,10 @@ app.put('/putArtista/:nombre', (req, res) => {
     })*/
 })
 
-
-
 app.delete('/deleteArtista/:id', (req, res) => {
     const id = req.params.id
     console.log(id)
     Artista.findByIdAndDelete(id,(err,docs) => {
-
         console.log(err);
         console.log(docs);
         err ? res.send("Error") : res.send("Exito");
@@ -91,6 +88,7 @@ app.delete('/deleteArtista/:id', (req, res) => {
 
 
 
+//Crud Actualizado Neftali
 app.get('/getAlbum',(req, res) => {
     Album.find({})
         .then((list) => {res.send(list); console.log(list)})
@@ -104,12 +102,11 @@ app.post('/postAlbum',(req, res)=>{
     .catch( (error) => {console.log(error)});
 })
 
-app.put('/putAlbum/:nombre', (req, res) => {
-    console.log(req.params)
-    const nombre = req.body.nombre
-    const params = req.params.nombre
-    Album.updateOne({nombre:param},
-        {nombre:nombre}, (err, res) => {
+app.put('/putAlbum/:titulo', (req, res) => {
+    console.log(req.params.titulo)
+    const titulo = req.body.titulo
+    const param = req.params.titulo
+    Album.updateOne({titulo:param},{titulo:titulo},(err, res) => {
             console.log("Actulizado")
         }
     ).then((response) => {
@@ -117,13 +114,13 @@ app.put('/putAlbum/:nombre', (req, res) => {
     }).catch((error)=> {
         console.log(error)
     })
-    res.send("Nef")
+    res.send("Exito ")
 })
 
 app.delete('/deleteAlbum/:id', (req, res) => {
     const id = req.params.id
     console.log(id)
-    Artista.findByIdAndDelete(id,(err,docs) => {
+    Album.findByIdAndDelete(id,(err,docs) => {
         console.log(err);
         console.log(docs);
         err ? res.send("Error") : res.send("Exito");
@@ -133,6 +130,7 @@ app.delete('/deleteAlbum/:id', (req, res) => {
         console.log(error);
     })
 })
+//lista de canciones segun el artista Queries
 
 app.listen( 3000, () => {
     console.log('iniciando server en puerto 3000');
